@@ -1,8 +1,9 @@
 //chuong trinh gao tiep esp voi mang va may tinh
 #include <ESP8266WiFi.h>
-//#include <ESP8266HTTPClient.h>
 #include <ESP8266WebServer.h>
 #include "EEPROM.h"
+#include <ESP8266HTTPClient.h>
+#include <ESP8266httpUpdate.h>
 int port =80;
 const char* host= "anhtantr.000webhostapp.com";
 ESP8266WebServer server(80);
@@ -11,7 +12,9 @@ const char*     passphrase     = "123698745";
 String          st;
 String          content;
 int             statusCode;
-String link;
+const int ver = 1;
+static String Status;
+
 static String Sp1 = "0";
 static String Sp2 = "0";
 static String Sp3 = "0";
@@ -20,8 +23,17 @@ static String Sp5 = "0";
 static String Sp6 = "0";
 static String Sp7 = "0";
 static String Var = "0";
-static int New = 0;
-static int k=1;
+String new1;
+String new2;
+String new3;
+String new4;
+String new5;
+String new6;
+String new7;
+String new8;
+String new9;
+static int New;
+int k=1;
 void setup()
 {
   Serial.begin(115200);
@@ -65,6 +77,7 @@ void setup()
      }
 }
 WiFi.softAPdisconnect(true);//tat cho do phat wifi
+checkupdate();
 }
 bool testWifi(void)
 {
@@ -217,57 +230,38 @@ void createWebServer(int webtype)
         });
     }
         }
-
-void connectweb(String link,int j)
-{
-       WiFiClient client;  //Declare an object of class HTTPClient
-                                                               //Send the request
-      if (!client.connect(host,port))
+      
+void loop()
+{ 
+     while(WiFi.status() == WL_CONNECTED) 
+     { //Check WiFi connection status
+     String    link ="/espget.php?";
+          WiFiClient client;  //Declare an object of class HTTPClient
+                                                                //Send the request
+        if (!client.connect(host,port))
      
       {
-        // Serial.print("Loi Ket Noi");
+         Serial.print("Loi Ket Noi");
       }
       while(!client.available())
       {
                client.print(String("GET ") + link + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Connection: close\r\n\r\n");
-       delay(100);
                String request = client.readString();
                request.remove(0,250);
-               if(j) {ProcessCommand(request);
-              
-               }
-        //Serial.print(request);
-         
-        client.stop();
+              // Serial.println(request);
+               ProcessCommand(request);   
+       
      delay(200);
      break;
           }
-}
-
-
-
-        
-void loop()
-{ 
-      while (Serial.available())
-  {
-    IncomingChar(Serial.read ());
-    
   }
-     if(k){
-   while (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
-    link ="/espget.php?";
-     connectweb(link,1);
-  }
-     while(WiFi.status() != WL_CONNECTED)
+     
+ if(WiFi.status() != WL_CONNECTED)
   {
     setup();
   }
-}
-
- 
 }
 void IncomingChar (const byte InChar)
 {
@@ -275,15 +269,13 @@ void IncomingChar (const byte InChar)
   static unsigned int Position = 0;
   switch (InChar)
   {
-    k=0;
     case '\r':
-   
-          break;
+    k=0;// Don't care about carriage return so throw away.
+      break;
     case '\n':   // ket thuc mot ban tin
       InLine [Position] = 0;
-      ProcessCommand(String(InLine));
       Position = 0;
-      break;
+         break;
     default:
     k=0;
       InLine [Position++] = InChar;
@@ -291,17 +283,7 @@ void IncomingChar (const byte InChar)
 }
 void ProcessCommand(String InLine)
 {
-  if(InLine.indexOf("room") !=-1) 
-  {
-    // Serial.print("Vao dc");
-     link = "/esppost.php?"+InLine;
-   connectweb(link,0);
 
-     
-       k=1;
-    }
-
-    
   if (InLine.indexOf("end") !=-1) 
   {
   
@@ -399,17 +381,116 @@ void ProcessCommand(String InLine)
     {
       Var = "9";
     }
-      if (InLine.indexOf("Var=10") != -1)
+      if (InLine.indexOf("Status=1") != -1)
     {
-      Var = "10";
+      Status = "1";
     }
-      
-    String Request="Sp1=" + Sp1 +"Sp2=" + Sp2 +"Sp3=" + Sp3 +"Sp4=" + Sp4 +"Sp5=" + Sp5 +"Sp6=" + Sp6 +"Sp7=" + Sp7 +"Var=" + Var;
+          if (InLine.indexOf("Status=2") != -1)
+    {
+      Status = "2";
+    }
+              if (InLine.indexOf("Status=3") != -1)
+    {
+      Status = "3";
+    }
+              if (InLine.indexOf("Status=4") != -1)
+    {
+      Status = "4";
+    }
+              if (InLine.indexOf("Status=5") != -1)
+    {
+      Status = "5";
+    }
+              if (InLine.indexOf("Status=6") != -1)
+    {
+      Status = "6";
+    }
+              if (InLine.indexOf("Status=7") != -1)
+    {
+      Status = "7";
+    }
+    String Request=" Sp1=" + Sp1 +" Sp2=" + Sp2 +" Sp3=" + Sp3 +" Sp4=" + Sp4 +" Sp5=" + Sp5 +" Sp6=" + Sp6 +" Sp7=" + Sp7 +" Var=" + Var+ " Status="+ Status;
     Serial.println(Request);
-    delay(100);
+    delay(500);
   k=1;
+ String Link1="&room=3&new1="+Sp1+"&new2="+Sp2+"&new3="+Sp3+"&new4="+Sp4+"&new5="+Sp5+"&new6="+Sp6+"&new7="+Sp7+"&new8="+Var+"&new9="+Status;
+  conn(Link1);
   }
+  
+  
+      
 
 }
 
+void conn(String link)
+
+{
+      if(link.indexOf("room=") !=-1)
+    {
+              
+           WiFiClient client;  //Declare an object of class HTTPClient
+                                                               //Send the request
+      if (!client.connect(host,port))
+     
+      {
+        // Serial.print("Loi Ket Noi");
+      }
+      while(!client.available())
+      {
+        String link1="/esppost.php?&"+link;
+               client.print(String("GET ") + link1 + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "Connection: close\r\n\r\n");
+       delay(100);
+               String request = client.readString();
+               //Serial.println(request);
+
+                 
+     k=1;
+   
+     break;
+          }
+          delay(300);
+    }
+    
+}
+void checkupdate() 
+{
+  WiFiClient client;  //Declare an object of class HTTPClient
+                                                               //Send the request
+      if (!client.connect(host,port))
+     
+      {
+        // Serial.print("Loi Ket Noi");
+      }
+      while(!client.available())
+      {
+        String link1="/checkupdate.php";
+               client.print(String("GET ") + link1 + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "Connection: close\r\n\r\n");
+       delay(100);
+               String request = client.readString();
+              if (request.indexOf("ver=2") != -1)
+              {
+              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ver2.bin");
+        //t_httpUpdate_return  ret = ESPhttpUpdate.update("https://server/file.bin");
+
+        switch(ret) {
+            case HTTP_UPDATE_FAILED:
+                Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
+                break;
+
+            case HTTP_UPDATE_NO_UPDATES:
+                Serial.println("HTTP_UPDATE_NO_UPDATES");
+                break;
+
+            case HTTP_UPDATE_OK:
+                Serial.println("HTTP_UPDATE_OK");
+                break;
+        }
+              }
+  break;
+}
+}
 
