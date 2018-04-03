@@ -2,7 +2,6 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include "EEPROM.h"
-#include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
 int port =80;
 const char* host= "anhtantr.000webhostapp.com";
@@ -281,6 +280,45 @@ void IncomingChar (const byte InChar)
       InLine [Position++] = InChar;
   }
 }
+void checkupdate() 
+{
+  WiFiClient client;  //Declare an object of class HTTPClient
+                                                               //Send the request
+      if (!client.connect(host,port))
+     
+      {
+        // Serial.print("Loi Ket Noi");
+      }
+      while(!client.available())
+      {
+        String link1="/checkupdate.php";
+               client.print(String("GET ") + link1 + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "Connection: close\r\n\r\n");
+       delay(100);
+               String request = client.readString();
+              if (request.indexOf("ver=3") != -1)
+              {
+              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ver3.bin");
+        //t_httpUpdate_return  ret = ESPhttpUpdate.update("https://server/file.bin");
+
+        switch(ret) {
+            case HTTP_UPDATE_FAILED:
+                Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
+                break;
+
+            case HTTP_UPDATE_NO_UPDATES:
+                Serial.println("HTTP_UPDATE_NO_UPDATES");
+                break;
+
+            case HTTP_UPDATE_OK:
+                Serial.println("HTTP_UPDATE_OK");
+                break;
+        }
+              }
+  break;
+}
+}
 void ProcessCommand(String InLine)
 {
 
@@ -411,14 +449,11 @@ void ProcessCommand(String InLine)
     }
     String Request=" Sp1=" + Sp1 +" Sp2=" + Sp2 +" Sp3=" + Sp3 +" Sp4=" + Sp4 +" Sp5=" + Sp5 +" Sp6=" + Sp6 +" Sp7=" + Sp7 +" Var=" + Var+ " Status="+ Status;
     Serial.println(Request);
-    delay(500);
+    delay(100);
   k=1;
  String Link1="&room=3&new1="+Sp1+"&new2="+Sp2+"&new3="+Sp3+"&new4="+Sp4+"&new5="+Sp5+"&new6="+Sp6+"&new7="+Sp7+"&new8="+Var+"&new9="+Status;
   conn(Link1);
   }
-  
-  
-      
 
 }
 
@@ -442,55 +477,14 @@ void conn(String link)
                "Host: " + host + "\r\n" +
                "Connection: close\r\n\r\n");
        delay(100);
-               String request = client.readString();
-               //Serial.println(request);
-
-                 
+                
      k=1;
    
      break;
           }
-          delay(300);
+          delay(100);
     }
     
 }
-void checkupdate() 
-{
-  WiFiClient client;  //Declare an object of class HTTPClient
-                                                               //Send the request
-      if (!client.connect(host,port))
-     
-      {
-        // Serial.print("Loi Ket Noi");
-      }
-      while(!client.available())
-      {
-        String link1="/checkupdate.php";
-               client.print(String("GET ") + link1 + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" +
-               "Connection: close\r\n\r\n");
-       delay(100);
-               String request = client.readString();
-              if (request.indexOf("ver=2") != -1)
-              {
-              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ver2.bin");
-        //t_httpUpdate_return  ret = ESPhttpUpdate.update("https://server/file.bin");
 
-        switch(ret) {
-            case HTTP_UPDATE_FAILED:
-                Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
-                break;
-
-            case HTTP_UPDATE_NO_UPDATES:
-                Serial.println("HTTP_UPDATE_NO_UPDATES");
-                break;
-
-            case HTTP_UPDATE_OK:
-                Serial.println("HTTP_UPDATE_OK");
-                break;
-        }
-              }
-  break;
-}
-}
 
