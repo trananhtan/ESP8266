@@ -297,12 +297,10 @@ void checkupdate()
                "Connection: close\r\n\r\n");
        delay(100);
                String request = client.readString();
-              if (request.indexOf("ver=3") != -1)
+              if (request.indexOf("ver=4") != -1)
               {
-              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ver3.bin");
-        //t_httpUpdate_return  ret = ESPhttpUpdate.update("https://server/file.bin");
-
-        switch(ret) {
+              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ver4.bin");
+            switch(ret) {
             case HTTP_UPDATE_FAILED:
                 Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
                 break;
@@ -313,7 +311,7 @@ void checkupdate()
 
             case HTTP_UPDATE_OK:
                 Serial.println("HTTP_UPDATE_OK");
-                break;
+                               break;
         }
               }
   break;
