@@ -476,7 +476,7 @@ void conn(String link)
                client.print(String("GET ") + link1 + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Connection: close\r\n\r\n");
-       delay(100);
+       delay(1000);
                 
      k=1;
    
