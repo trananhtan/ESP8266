@@ -1,17 +1,18 @@
 #include "DFRobotDFPlayerMini.h"
 #include "Arduino.h"
 #include "SoftwareSerial.h"
-SoftwareSerial mySoftwareSerial(A4, A5); // RX, TX
+SoftwareSerial mySoftwareSerial(9, 10); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 int k=0;
 int vl=3;
 int Var;
-int D2 = 2;
-int D3 = 3;
-int D4 = 4;
-int D5 = 5;
-int D7 = 7;
-int D9 = 9;
+int D2 = 3;
+int D3 = 4;
+int D4 = 5;
+int D5 = 6;
+int D6 = 7;
+int D7 = 8;
+int D1 = 2;
 String new1;
 String new2;
 String new3;
@@ -54,8 +55,8 @@ void setup()
 
   pinMode(D7, OUTPUT);
   digitalWrite(D7,LOW);
-  pinMode(D9, OUTPUT);
-  digitalWrite(D9,LOW);
+  pinMode(D1, OUTPUT);
+  digitalWrite(D1,LOW);
   pinMode(D2, OUTPUT);
   digitalWrite(D2,LOW);
   pinMode(D3, OUTPUT);
@@ -64,6 +65,8 @@ void setup()
   digitalWrite(D4,LOW);
   pinMode(D5, OUTPUT);
   digitalWrite(D5,LOW);
+    pinMode(D6, OUTPUT);
+  digitalWrite(D6,LOW);
 }
 void loop()
 {
@@ -96,80 +99,80 @@ void ProcessCommand(String InLine)
   Serial.println(InLine);
          if (InLine.indexOf("Sp1=0") != -1)
     {
-      digitalWrite(D2,LOW);
+      digitalWrite(D1,LOW);
       new1="0";
     }
     if (InLine.indexOf("Sp1=1") != -1)
     {
-     digitalWrite(D2,HIGH);
+     digitalWrite(D1,HIGH);
    new1="1";
     }
     if (InLine.indexOf("Sp2=0") != -1)
     {
       new2="0";
-      digitalWrite(D3,LOW);
+      digitalWrite(D2,LOW);
     
     }if (InLine.indexOf("Sp2=1") != -1)
     {
-       digitalWrite(D3,HIGH);
+       digitalWrite(D2,HIGH);
        new2="1";
     }
     if (InLine.indexOf("Sp3=0") != -1)
     {
       new3="0";
-      digitalWrite(D4,LOW);
+      digitalWrite(D3,LOW);
      
     }
     if (InLine.indexOf("Sp3=1") != -1)
     {
-      digitalWrite(D4,HIGH);
+      digitalWrite(D3,HIGH);
      new3="1";
       
     }
     if (InLine.indexOf("Sp4=0") != -1)
     {
       new4="0";
-   digitalWrite(D5,LOW);
+   digitalWrite(D4,LOW);
   
     }
     if (InLine.indexOf("Sp4=1") != -1)
     {
-       digitalWrite(D5,HIGH);
+       digitalWrite(D4,HIGH);
      new4="1";
     }
     if (InLine.indexOf("Sp5=0") != -1)
     {
       new5="0";
-     digitalWrite(D7,LOW);
+     digitalWrite(D5,LOW);
     
     }
     
         if (InLine.indexOf("Sp5=1") != -1)
     {
-      digitalWrite(D7,HIGH);
+      digitalWrite(D5,HIGH);
     new5="1";
     }
     if (InLine.indexOf("Sp6=0") != -1)
     {
       new6="0";
-     digitalWrite(D9,LOW);
+     digitalWrite(D6,LOW);
     
     }
         if (InLine.indexOf("Sp6=1") != -1)
     {
-      digitalWrite(D9,HIGH);
+      digitalWrite(D6,HIGH);
        new6="1";
     }
         
     if (InLine.indexOf("Sp7=0") != -1)
     {
       new7="0";
-    digitalWrite(D2,LOW);
+    digitalWrite(D7,LOW);
    
     }
         if (InLine.indexOf("Sp7=1") != -1)
     {
-         digitalWrite(D2,HIGH);
+         digitalWrite(D7,HIGH);
         new7="1";
     }
   if (InLine.indexOf("Var=0") != -1)
@@ -334,5 +337,3 @@ void ProcessCommand(String InLine)
   
 
 }
-
-
