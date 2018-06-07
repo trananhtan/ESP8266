@@ -35,7 +35,7 @@ void setup()
 {
   Serial.begin(115200);
      EEPROM.begin(512);
-   
+
     Serial.println("Startup");
     // read eeprom for ssid, pass and blynk
     Serial.println("Reading EEPROM ssid");
@@ -142,7 +142,7 @@ void setupAP(void)
     Serial.println(ssid);
     Serial.println(passphrase);
     WiFi.softAP(ssid, passphrase, 6);
- 
+
     launchWeb(1);
     Serial.println("over");
 }
@@ -210,9 +210,9 @@ void createWebServer(int webtype)
                     EEPROM.write(32 + i, qpass[i]);
                     Serial.print("Wrote: ");
                     Serial.println(qpass[i]);
-                }              
+                }
                 EEPROM.commit();
-                EEPROM.end();                
+                EEPROM.end();
                 content = "{\"Success\":\"Luu vao he thong. Khoi dong lai ten wifi moi\"}";
                 statusCode = 200;
             }
@@ -231,18 +231,18 @@ void createWebServer(int webtype)
 
 
 
-        
+
 void loop()
-{ 
+{
 
 
-     while(WiFi.status() == WL_CONNECTED) 
+     while(WiFi.status() == WL_CONNECTED)
      { //Check WiFi connection status
      String    link ="/espget.php?";
           WiFiClient client;  //Declare an object of class HTTPClient
                                                                 //Send the request
         if (!client.connect(host,port))
-     
+
       {
          Serial.print("Loi Ket Noi");
       }
@@ -254,13 +254,13 @@ void loop()
                String request = client.readString();
                request.remove(0,250);
               // Serial.println(request);
-               ProcessCommand(request);   
-       
+               ProcessCommand(request);
+
      delay(200);
      break;
           }
   }
-     
+
  if(WiFi.status() != WL_CONNECTED)
   {
     setup();
@@ -287,9 +287,9 @@ void IncomingChar (const byte InChar)
 void ProcessCommand(String InLine)
 {
 
-  if (InLine.indexOf("end") !=-1) 
+  if (InLine.indexOf("end") !=-1)
   {
-  
+
     if (InLine.indexOf("Sp1=0") != -1)
     {
       Sp1 = "0";
@@ -337,7 +337,7 @@ void ProcessCommand(String InLine)
     {
       Sp6 = "1";
     }
-        
+
     if (InLine.indexOf("Sp7=0") != -1)
     {
       Sp7 = "0";
@@ -371,7 +371,7 @@ void ProcessCommand(String InLine)
     }  if (InLine.indexOf("Var=6") != -1)
     {
       Var = "6";
-    } 
+    }
     if (InLine.indexOf("Var=7") != -1)
     {
       Var = "7";
@@ -419,9 +419,9 @@ void ProcessCommand(String InLine)
  String Link1="&room=3&new1="+Sp1+"&new2="+Sp2+"&new3="+Sp3+"&new4="+Sp4+"&new5="+Sp5+"&new6="+Sp6+"&new7="+Sp7+"&new8="+Var+"&new9="+Status;
   conn(Link1);
   }
-  
-  
-      
+
+
+
 
 }
 
@@ -430,11 +430,11 @@ void conn(String link)
 {
       if(link.indexOf("room=") !=-1)
     {
-              
+
            WiFiClient client;  //Declare an object of class HTTPClient
                                                                //Send the request
       if (!client.connect(host,port))
-     
+
       {
         // Serial.print("Loi Ket Noi");
       }
@@ -448,12 +448,12 @@ void conn(String link)
                String request = client.readString();
                //Serial.println(request);
 
-                 
+
      k=1;
-   
+
      break;
           }
           delay(300);
     }
-    
+
 }

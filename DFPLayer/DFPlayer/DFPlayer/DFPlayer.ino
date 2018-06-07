@@ -26,15 +26,15 @@ int old;
 int old1;
 void setup()
 {
- 
+
   mySoftwareSerial.begin(9600);
-  
+
   Serial.begin(115200);
 
   Serial.println();
   Serial.println(F("DFRobot DFPlayer Mini Demo"));
   Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
-  
+
   if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
@@ -42,14 +42,14 @@ void setup()
     while(true);
   }
   Serial.println(F("DFPlayer Mini online."));
-   
+
   myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
- 
+
    myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
  //
    myDFPlayer.enableDAC();
   //
-   
+
 //
 
 
@@ -65,12 +65,12 @@ void setup()
   digitalWrite(D4,LOW);
   pinMode(D5, OUTPUT);
   digitalWrite(D5,LOW);
-    pinMode(D6, OUTPUT);
+  pinMode(D6, OUTPUT);
   digitalWrite(D6,LOW);
 }
 void loop()
 {
-  
+
 while (Serial.available()) {
    IncomingChar(Serial.read());
   }
@@ -81,9 +81,9 @@ void IncomingChar (const byte InChar)
   static unsigned int Position = 0;
   switch (InChar)
   {
-   
+
     case '\r':
-   
+
           break;
     case '\n':   // ket thuc mot ban tin
       InLine [Position] = 0;
@@ -111,7 +111,7 @@ void ProcessCommand(String InLine)
     {
       new2="0";
       digitalWrite(D2,LOW);
-    
+
     }if (InLine.indexOf("Sp2=1") != -1)
     {
        digitalWrite(D2,HIGH);
@@ -121,19 +121,19 @@ void ProcessCommand(String InLine)
     {
       new3="0";
       digitalWrite(D3,LOW);
-     
+
     }
     if (InLine.indexOf("Sp3=1") != -1)
     {
       digitalWrite(D3,HIGH);
      new3="1";
-      
+
     }
     if (InLine.indexOf("Sp4=0") != -1)
     {
       new4="0";
    digitalWrite(D4,LOW);
-  
+
     }
     if (InLine.indexOf("Sp4=1") != -1)
     {
@@ -144,9 +144,9 @@ void ProcessCommand(String InLine)
     {
       new5="0";
      digitalWrite(D5,LOW);
-    
+
     }
-    
+
         if (InLine.indexOf("Sp5=1") != -1)
     {
       digitalWrite(D5,HIGH);
@@ -156,19 +156,19 @@ void ProcessCommand(String InLine)
     {
       new6="0";
      digitalWrite(D6,LOW);
-    
+
     }
         if (InLine.indexOf("Sp6=1") != -1)
     {
       digitalWrite(D6,HIGH);
        new6="1";
     }
-        
+
     if (InLine.indexOf("Sp7=0") != -1)
     {
       new7="0";
     digitalWrite(D7,LOW);
-   
+
     }
         if (InLine.indexOf("Sp7=1") != -1)
     {
@@ -196,7 +196,7 @@ void ProcessCommand(String InLine)
     }
       if (InLine.indexOf("Var=2") != -1)
     {
-      
+
      if(old !=2)
     {
       old=2;
@@ -224,7 +224,7 @@ void ProcessCommand(String InLine)
       vl=16;
       new8="4";
     }
-    }  
+    }
     if (InLine.indexOf("Var=5") != -1)
     {
        if(old !=5)
@@ -273,13 +273,13 @@ void ProcessCommand(String InLine)
       vl=30;
      new8="9";
     }
-    } 
+    }
     if (InLine.indexOf("Status=1") != -1)
     {
        if(old1 !=1)
     {
       old1=1;
-      myDFPlayer.previous(); 
+      myDFPlayer.previous();
       myDFPlayer.volume(vl);
       new9="1";
     }
@@ -299,7 +299,7 @@ void ProcessCommand(String InLine)
        if(old1 !=3)
     {
       old1=3;
-     myDFPlayer.start(); 
+     myDFPlayer.start();
       myDFPlayer.volume(vl);
       new9="3";
     }
@@ -334,6 +334,4 @@ void ProcessCommand(String InLine)
      new9="6";
      }
     }
-  
-
-}
+  }

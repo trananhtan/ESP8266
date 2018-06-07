@@ -53,3 +53,6 @@ dkms.conf
 App/esppost.php
 ESP8266/ESP8266/ESP8266/ESP8266.ino
 *.ino
+DFPLayer/DFPlayer/DFPlayer/DFPlayer.ino
+DFPLayer/DFPlayer/ESP8266/ESP8266.ino
+*.ino
