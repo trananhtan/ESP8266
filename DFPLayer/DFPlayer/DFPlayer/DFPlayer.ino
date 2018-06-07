@@ -1,7 +1,7 @@
 #include "DFRobotDFPlayerMini.h"
 #include "Arduino.h"
 #include "SoftwareSerial.h"
-SoftwareSerial mySoftwareSerial(9, 10); // RX, TX
+SoftwareSerial mySoftwareSerial(10, 9); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 int k=0;
 int vl=3;
