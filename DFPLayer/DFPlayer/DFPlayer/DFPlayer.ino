@@ -1,7 +1,9 @@
 #include "DFRobotDFPlayerMini.h"
+// Thu vien dieu khien DFPlayer
 #include "Arduino.h"
 #include "SoftwareSerial.h"
 SoftwareSerial mySoftwareSerial(10, 9); // RX, TX
+//Chan RX TX dieu khien DFPlayer
 DFRobotDFPlayerMini myDFPlayer;
 int k=0;
 int vl=3;
@@ -76,6 +78,7 @@ while (Serial.available()) {
   }
 }
 void IncomingChar (const byte InChar)
+// Ham doc ky hieu nhan duoc tu seriport roi chuyen thanh doan text
 {
   static char InLine [300];
   static unsigned int Position = 0;
@@ -95,6 +98,7 @@ void IncomingChar (const byte InChar)
   }
 }
 void ProcessCommand(String InLine)
+// xu ly du lieu doc duoc tu seriport de tiep nhan thong tin dieu khien
 {
   Serial.println(InLine);
          if (InLine.indexOf("Sp1=0") != -1)
