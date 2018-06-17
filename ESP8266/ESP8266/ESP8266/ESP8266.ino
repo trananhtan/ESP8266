@@ -299,7 +299,7 @@ void checkupdate()
                String request = client.readString();
               if (request.indexOf("ver=5") != -1)
               {
-              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ver5.bin");
+              t_httpUpdate_return ret = ESPhttpUpdate.update("http://anhtan1002.freeasphost.net/ve51.bin");
             switch(ret) {
             case HTTP_UPDATE_FAILED:
                 Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
@@ -385,7 +385,7 @@ void ProcessCommand(String InLine)
     }
       if (InLine.indexOf("Var=1") != -1)
     {
-      Var = "11";
+      Var = "1";
     }
       if (InLine.indexOf("Var=2") != -1)
     {
@@ -447,7 +447,7 @@ void ProcessCommand(String InLine)
     }
     String Request=" Sp1=" + Sp1 +" Sp2=" + Sp2 +" Sp3=" + Sp3 +" Sp4=" + Sp4 +" Sp5=" + Sp5 +" Sp6=" + Sp6 +" Sp7=" + Sp7 +" Var=" + Var+ " Status="+ Status;
     Serial.println(Request);
-    delay(100);
+    delay(10);
   k=1;
  String Link1="&room=3&new1="+Sp1+"&new2="+Sp2+"&new3="+Sp3+"&new4="+Sp4+"&new5="+Sp5+"&new6="+Sp6+"&new7="+Sp7+"&new8="+Var+"&new9="+Status;
   conn(Link1);
